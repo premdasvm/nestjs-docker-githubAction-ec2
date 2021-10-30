@@ -52,9 +52,8 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-            docker stop nestjs-dev
-            docker rm nestjs-dev
+            docker stop nestjs
+            docker rm nestjs
             VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
             # Strip "v" prefix from tag name
             [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
