@@ -37,3 +37,26 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker tag $IMAGE_NAME $IMAGE_ID:latest
           docker push $IMAGE_ID --all-tags
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Docker
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            docker stop nestjs-dev
+            docker rm nestjs-dev
+            VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+            # Strip "v" prefix from tag name
+            [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+            echo VERSION=$VERSION
+            docker pull docker.pkg.github.com/premdasvm/nestjs-devops/nest-devops:$VERSION
+            docker images
+            docker run -p 3000:3000 --name nestjs -d docker.pkg.github.com/premdasvm/nestjs-devops/nest-devops:$VERSION
+            docker ps
+            echo "Latest Image Deployed"
