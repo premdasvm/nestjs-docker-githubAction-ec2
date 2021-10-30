@@ -42,7 +42,6 @@ jobs:
           docker push $IMAGE_ID --all-tags
   deploy:
     needs: build
-    
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Docker
@@ -53,6 +52,7 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
+            sudo -i
             docker stop nestjs-dev
             docker rm nestjs-dev
             VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
