@@ -9,10 +9,11 @@ export interface Movie {
 @Injectable()
 export class AppService {
   private movies: Movie[] = [
-    { id: 1, name: 'Star Wars: The Force Awakens', year: 2015 },
-    { id: 2, name: 'Star Wars: The Last Jedi', year: 2017 },
-    { id: 3, name: 'Star Wars: The Rise of Skywalker', year: 2019 },
-    { id: 4, name: 'Star Wars: A New Hope', year: 1977 },
+    { id: 1, name: 'Star Wars: A New Hope', year: 1977 },
+    { id: 2, name: 'Star Wars: The Empire Strikes Back', year: 1980 },
+    { id: 3, name: 'Star Wars: The Force Awakens', year: 2015 },
+    { id: 4, name: 'Star Wars: The Last Jedi', year: 2017 },
+    { id: 5, name: 'Star Wars: The Rise of Skywalker', year: 2019 },
   ];
 
   getMovies(): Movie[] {
